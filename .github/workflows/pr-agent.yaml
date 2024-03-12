@@ -3,9 +3,12 @@ name: pr-agent
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+  issue_comment:
+    types: [created, edited]
 
 permissions:
   pull-requests: write
+  issues: write
 
 jobs:
   pr_agent:
@@ -19,7 +22,7 @@ jobs:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           github_action.auto_describe: true
-          github_action.auto_review:   true
-          PR_DESCRIPTION.EXTRA_INSTRUCTIONS:      'Please use Japanese.'
-          PR_REVIEWER.EXTRA_INSTRUCTIONS:         'Please use Japanese.'
-          PR_CODE_SUGGESTIONS.EXTRA_INSTRUCTIONS: 'Please use Japanese.'
+          github_action.auto_review: true
+          PR_DESCRIPTION.EXTRA_INSTRUCTIONS: "Please use Japanese."
+          PR_REVIEWER.EXTRA_INSTRUCTIONS: "Please use Japanese."
+          PR_CODE_SUGGESTIONS.EXTRA_INSTRUCTIONS: "Please use Japanese."
