@@ -8,12 +8,18 @@ import (
 )
 
 func GetAllTodo(c *gin.Context) {
+	// repositoryとusecaseをインスタンス化
 	repository := repository.NewTodoRepository()
 	usecase := usecase.NewTodoUsecase(repository)
 
-	test := usecase.GetAllTodo()
+	todos, err := usecase.GetAllTodo()
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
 
 	c.JSON(200, gin.H{
-		"message": test,
+		"message": todos,
 	})
 }
