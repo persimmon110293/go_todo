@@ -21,18 +21,21 @@ func NewTodoRepository() ITodoRepository {
 }
 
 func (r *TodoRepository) GetAllTodo() ([]Todo, error) {
-	db := dbInit()
-	todo := []Todo{}
+	db, err := dbInit()
+	if err != nil {
+		return nil, err
+	}
 
-	err := db.Find(&todo).Error
+	todo := []Todo{}
+	err = db.Find(&todo).Error
 	return todo, err
 }
 
-func dbInit() *gorm.DB {
-	dsn := "root:password@tcp(mysql:3306)/practice?charset=utf8mb4&parseTime=true"
+func dbInit() (*gorm.DB, error) {
+	dsn := "root:password@tcp(mysql:3306)/practice?charset=utf8mb4&parseTime=true" // 練習用のためハードコーディング
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect database")
+		return nil, err
 	}
-	return db
+	return db, nil
 }
