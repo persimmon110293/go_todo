@@ -1,6 +1,7 @@
 package handler
 
-import "testing"
+import (
+	"testing"
+)
 
-// TODO: テストコード書く
 func TestGetAllTodo(t *testing.T) {}

@@ -4,11 +4,15 @@ import (
 	"main/repository"
 )
 
+type ITodoUsecase interface {
+	GetAllTodo() ([]repository.Todo, error)
+}
+
 type TodoUsecase struct {
 	repository repository.ITodoRepository
 }
 
-func NewTodoUsecase(repository repository.ITodoRepository) *TodoUsecase {
+func NewTodoUsecase(repository repository.ITodoRepository) ITodoUsecase {
 	return &TodoUsecase{repository}
 }
 

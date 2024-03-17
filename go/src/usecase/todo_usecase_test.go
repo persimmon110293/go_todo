@@ -19,10 +19,12 @@ func TestGetAllTodo(t *testing.T) {
 	// 対象のmethodをmock化(ここではGetAllTodo)
 	mockRepository.EXPECT().GetAllTodo().Return([]repository.Todo{}, nil)
 
-	// usecaseをインスタンス化
-	usecase := NewTodoUsecase(mockRepository)
-	todo, err := usecase.GetAllTodo()
+	t.Run("success", func(t *testing.T) {
+		// usecaseをインスタンス化
+		usecase := NewTodoUsecase(mockRepository)
+		todo, err := usecase.GetAllTodo()
 
-	assert.Equal(t, todo, []repository.Todo{})
-	assert.Nil(t, err)
+		assert.Equal(t, todo, []repository.Todo{})
+		assert.Nil(t, err)
+	})
 }
