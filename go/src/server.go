@@ -16,6 +16,7 @@ func main() {
 	})
 
 	router.GET("todo", handler.GetAllTodo)
+	router.POST("todo", handler.CreateTodo)
 
 	router.Run(":8080")
 }

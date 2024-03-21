@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"io"
 	"main/repository"
 	"main/usecase"
 
@@ -21,5 +22,29 @@ func GetAllTodo(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"message": todos,
+	})
+}
+
+func CreateTodo(c *gin.Context) {
+	body, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
+
+	repository := repository.NewTodoRepository()
+	usecase := usecase.NewTodoUsecase(repository)
+
+	result, err := usecase.CreateTodo(body)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+	}
+
+	c.JSON(200, gin.H{
+		"message": "success",
+		"resutl":  result,
 	})
 }

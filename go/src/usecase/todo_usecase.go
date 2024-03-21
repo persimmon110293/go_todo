@@ -1,11 +1,13 @@
 package usecase
 
 import (
+	"encoding/json"
 	"main/repository"
 )
 
 type ITodoUsecase interface {
 	GetAllTodo() ([]repository.Todo, error)
+	CreateTodo([]byte) (*repository.Todo, error)
 }
 
 type TodoUsecase struct {
@@ -23,4 +25,15 @@ func (u *TodoUsecase) GetAllTodo() ([]repository.Todo, error) {
 	}
 
 	return todos, nil
+}
+
+func (u *TodoUsecase) CreateTodo(body []byte) (*repository.Todo, error) {
+	var message map[string]string
+
+	// JSONをパース
+	if err := json.Unmarshal(body, &message); err != nil {
+		return nil, err
+	}
+
+	return u.repository.CreateTodo(message)
 }
