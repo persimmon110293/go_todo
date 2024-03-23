@@ -31,6 +31,7 @@ func CreateTodo(c *gin.Context) {
 		c.JSON(500, gin.H{
 			"message": err.Error(),
 		})
+		return
 	}
 
 	repository := repository.NewTodoRepository()
@@ -41,10 +42,11 @@ func CreateTodo(c *gin.Context) {
 		c.JSON(500, gin.H{
 			"message": err.Error(),
 		})
+		return
 	}
 
 	c.JSON(200, gin.H{
 		"message": "success",
-		"resutl":  result,
+		"result":  result,
 	})
 }
