@@ -14,6 +14,7 @@ type Todo struct {
 
 type ITodoRepository interface {
 	GetAllTodo() ([]Todo, error)
+	GetTodoById(string) (*Todo, error)
 	CreateTodo(map[string]string) (*Todo, error)
 }
 
@@ -32,6 +33,17 @@ func (r *TodoRepository) GetAllTodo() ([]Todo, error) {
 	todo := []Todo{}
 	err = db.Find(&todo).Error
 	return todo, err
+}
+
+func (r *TodoRepository) GetTodoById(id string) (*Todo, error) {
+	db, err := dbInit()
+	if err != nil {
+		return nil, err
+	}
+
+	todo := Todo{}
+	err = db.First(&todo, "id = ?", id).Error
+	return &todo, err
 }
 
 func (r *TodoRepository) CreateTodo(message map[string]string) (*Todo, error) {
