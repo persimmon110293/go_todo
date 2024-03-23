@@ -4,6 +4,7 @@ import (
 	"io"
 	"main/repository"
 	"main/usecase"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,6 +23,31 @@ func GetAllTodo(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"message": todos,
+	})
+}
+
+func GetTodoById(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "id is required",
+		})
+		return
+	}
+
+	repository := repository.NewTodoRepository()
+	usecase := usecase.NewTodoUsecase(repository)
+
+	todo, err := usecase.GetTodoById(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": todo,
 	})
 }
 

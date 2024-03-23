@@ -7,6 +7,7 @@ import (
 
 type ITodoUsecase interface {
 	GetAllTodo() ([]repository.Todo, error)
+	GetTodoById(string) (*repository.Todo, error)
 	CreateTodo([]byte) (*repository.Todo, error)
 }
 
@@ -25,6 +26,15 @@ func (u *TodoUsecase) GetAllTodo() ([]repository.Todo, error) {
 	}
 
 	return todos, nil
+}
+
+func (u *TodoUsecase) GetTodoById(id string) (*repository.Todo, error) {
+	todo, err := u.repository.GetTodoById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return todo, nil
 }
 
 func (u *TodoUsecase) CreateTodo(body []byte) (*repository.Todo, error) {
