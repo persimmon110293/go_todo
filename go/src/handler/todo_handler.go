@@ -4,6 +4,7 @@ import (
 	"io"
 	"main/repository"
 	"main/usecase"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,7 +29,7 @@ func GetAllTodo(c *gin.Context) {
 func GetTodoById(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "id is required",
 		})
 		return
@@ -39,13 +40,13 @@ func GetTodoById(c *gin.Context) {
 
 	todo, err := usecase.GetTodoById(id)
 	if err != nil {
-		c.JSON(500, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
 		})
 		return
 	}
 
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"message": todo,
 	})
 }
