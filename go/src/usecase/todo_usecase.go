@@ -9,6 +9,7 @@ type ITodoUsecase interface {
 	GetAllTodo() ([]repository.Todo, error)
 	GetTodoById(string) (*repository.Todo, error)
 	CreateTodo([]byte) (*repository.Todo, error)
+	DeleteTodoById(string) error
 }
 
 type TodoUsecase struct {
@@ -46,4 +47,8 @@ func (u *TodoUsecase) CreateTodo(body []byte) (*repository.Todo, error) {
 	}
 
 	return u.repository.CreateTodo(message)
+}
+
+func (u *TodoUsecase) DeleteTodoById(id string) error {
+	return u.repository.DeleteTodoById(id)
 }

@@ -16,6 +16,7 @@ type ITodoRepository interface {
 	GetAllTodo() ([]Todo, error)
 	GetTodoById(string) (*Todo, error)
 	CreateTodo(map[string]string) (*Todo, error)
+	DeleteTodoById(string) error
 }
 
 type TodoRepository struct{}
@@ -65,6 +66,23 @@ func (r *TodoRepository) CreateTodo(message map[string]string) (*Todo, error) {
 	}
 
 	return &todo, nil
+}
+
+func (r *TodoRepository) DeleteTodoById(id string) error {
+	db, err := dbInit()
+	if err != nil {
+		return err
+	}
+
+	result := db.Delete(&Todo{}, "id = ?", id)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return errors.New("failed to delete todo")
+	}
+
+	return nil
 }
 
 func dbInit() (*gorm.DB, error) {
