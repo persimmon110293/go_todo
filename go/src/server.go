@@ -15,9 +15,11 @@ func main() {
 		})
 	})
 
-	router.GET("todo", handler.GetAllTodo)
-	router.POST("todo", handler.CreateTodo)
-	router.GET("todo/:id", handler.GetTodoById)
+	router.GET("/todo", handler.GetAllTodo)
+	router.POST("/todo", handler.CreateTodo)
+	router.GET("/todo/:id", handler.GetTodoById)
+	router.PUT("/todo/:id", handler.UpdateTodoById)
+	router.DELETE("/todo/:id", handler.DeleteTodoById)
 
 	router.Run(":8080")
 }
