@@ -17,6 +17,26 @@ type MockITodoRepository struct {
 	recorder *MockITodoRepositoryMockRecorder
 }
 
+// CreateTodo implements repository.ITodoRepository.
+func (m *MockITodoRepository) CreateTodo(map[string]string) (*repository.Todo, error) {
+	panic("unimplemented")
+}
+
+// DeleteTodoById implements repository.ITodoRepository.
+func (m *MockITodoRepository) DeleteTodoById(string) error {
+	panic("unimplemented")
+}
+
+// GetTodoById implements repository.ITodoRepository.
+func (m *MockITodoRepository) GetTodoById(string) (*repository.Todo, error) {
+	panic("unimplemented")
+}
+
+// UpdateTodoById implements repository.ITodoRepository.
+func (m *MockITodoRepository) UpdateTodoById(string, map[string]string) (*repository.Todo, error) {
+	panic("unimplemented")
+}
+
 // MockITodoRepositoryMockRecorder is the mock recorder for MockITodoRepository.
 type MockITodoRepositoryMockRecorder struct {
 	mock *MockITodoRepository
