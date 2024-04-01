@@ -9,6 +9,7 @@ type ITodoUsecase interface {
 	GetAllTodo() ([]repository.Todo, error)
 	GetTodoById(string) (*repository.Todo, error)
 	CreateTodo([]byte) (*repository.Todo, error)
+	UpdateTodoById(string, []byte) (*repository.Todo, error)
 	DeleteTodoById(string) error
 }
 
@@ -47,6 +48,17 @@ func (u *TodoUsecase) CreateTodo(body []byte) (*repository.Todo, error) {
 	}
 
 	return u.repository.CreateTodo(message)
+}
+
+func (u *TodoUsecase) UpdateTodoById(id string, body []byte) (*repository.Todo, error) {
+	var message map[string]string
+
+	// JSONをパース
+	if err := json.Unmarshal(body, &message); err != nil {
+		return nil, err
+	}
+
+	return u.repository.UpdateTodoById(id, message)
 }
 
 func (u *TodoUsecase) DeleteTodoById(id string) error {

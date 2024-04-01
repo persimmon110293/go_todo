@@ -77,6 +77,41 @@ func CreateTodo(c *gin.Context) {
 	})
 }
 
+func UpdateTodoById(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "id is required",
+		})
+		return
+	}
+
+	body, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	repository := repository.NewTodoRepository()
+	usecase := usecase.NewTodoUsecase(repository)
+
+	result, err := usecase.UpdateTodoById(id, body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "success",
+		"result":  result,
+	})
+
+}
+
 func DeleteTodoById(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
