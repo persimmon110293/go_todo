@@ -1,8 +1,8 @@
 package usecase
 
 import (
+	entity "main/domain/entity"
 	mock "main/mock/repository"
-	"main/repository"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -17,14 +17,14 @@ func TestGetAllTodo(t *testing.T) {
 	// mockのrepositoryを作成
 	mockRepository := mock.NewMockITodoRepository(mockCtrl)
 	// 対象のmethodをmock化(ここではGetAllTodo)
-	mockRepository.EXPECT().GetAllTodo().Return([]repository.Todo{}, nil)
+	mockRepository.EXPECT().GetAllTodo().Return([]entity.Todo{}, nil)
 
 	t.Run("success", func(t *testing.T) {
 		// usecaseをインスタンス化
 		usecase := NewTodoUsecase(mockRepository)
 		todo, err := usecase.GetAllTodo()
 
-		assert.Equal(t, todo, []repository.Todo{})
+		assert.Equal(t, todo, []entity.Todo{})
 		assert.Nil(t, err)
 	})
 }

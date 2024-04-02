@@ -1,7 +1,10 @@
+//go:generate mockgen -source=todo_repository.go -destination=../mock/repository/todo_repository_mock.go -package=mock
+
 package repository
 
 import (
 	"errors"
+	entity "main/domain/entity"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -13,10 +16,10 @@ type Todo struct {
 }
 
 type ITodoRepository interface {
-	GetAllTodo() ([]Todo, error)
-	GetTodoById(string) (*Todo, error)
-	CreateTodo(map[string]string) (*Todo, error)
-	UpdateTodoById(string, map[string]string) (*Todo, error)
+	GetAllTodo() ([]entity.Todo, error)
+	GetTodoById(string) (*entity.Todo, error)
+	CreateTodo(map[string]string) (*entity.Todo, error)
+	UpdateTodoById(string, map[string]string) (*entity.Todo, error)
 	DeleteTodoById(string) error
 }
 
@@ -26,35 +29,35 @@ func NewTodoRepository() ITodoRepository {
 	return &TodoRepository{}
 }
 
-func (r *TodoRepository) GetAllTodo() ([]Todo, error) {
+func (r *TodoRepository) GetAllTodo() ([]entity.Todo, error) {
 	db, err := dbInit()
 	if err != nil {
 		return nil, err
 	}
 
-	todo := []Todo{}
+	todo := []entity.Todo{}
 	err = db.Find(&todo).Error
 	return todo, err
 }
 
-func (r *TodoRepository) GetTodoById(id string) (*Todo, error) {
+func (r *TodoRepository) GetTodoById(id string) (*entity.Todo, error) {
 	db, err := dbInit()
 	if err != nil {
 		return nil, err
 	}
 
-	todo := Todo{}
+	todo := entity.Todo{}
 	err = db.First(&todo, "id = ?", id).Error
 	return &todo, err
 }
 
-func (r *TodoRepository) CreateTodo(message map[string]string) (*Todo, error) {
+func (r *TodoRepository) CreateTodo(message map[string]string) (*entity.Todo, error) {
 	db, err := dbInit()
 	if err != nil {
 		return nil, err
 	}
 
-	todo := Todo{
+	todo := entity.Todo{
 		Title:       message["Title"],
 		Description: message["Description"],
 	}
@@ -69,17 +72,17 @@ func (r *TodoRepository) CreateTodo(message map[string]string) (*Todo, error) {
 	return &todo, nil
 }
 
-func (r *TodoRepository) UpdateTodoById(id string, message map[string]string) (*Todo, error) {
+func (r *TodoRepository) UpdateTodoById(id string, message map[string]string) (*entity.Todo, error) {
 	db, err := dbInit()
 	if err != nil {
 		return nil, err
 	}
 
-	todo := Todo{
+	todo := entity.Todo{
 		Title:       message["Title"],
 		Description: message["Description"],
 	}
-	result := db.Model(&Todo{}).Where("id = ?", id).Updates(todo)
+	result := db.Model(&entity.Todo{}).Where("id = ?", id).Updates(todo)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -96,7 +99,7 @@ func (r *TodoRepository) DeleteTodoById(id string) error {
 		return err
 	}
 
-	result := db.Delete(&Todo{}, "id = ?", id)
+	result := db.Delete(&entity.Todo{}, "id = ?", id)
 	if result.Error != nil {
 		return result.Error
 	}
