@@ -14,6 +14,8 @@ type ITodoUsecase interface {
 	DeleteTodoById(string) error
 }
 
+var message map[string]string
+
 type TodoUsecase struct {
 	repository repository.ITodoRepository
 }
@@ -41,8 +43,6 @@ func (u *TodoUsecase) GetTodoById(id string) (*entity.Todo, error) {
 }
 
 func (u *TodoUsecase) CreateTodo(body []byte) (*entity.Todo, error) {
-	var message map[string]string
-
 	// JSONをパース
 	if err := json.Unmarshal(body, &message); err != nil {
 		return nil, err
@@ -52,8 +52,6 @@ func (u *TodoUsecase) CreateTodo(body []byte) (*entity.Todo, error) {
 }
 
 func (u *TodoUsecase) UpdateTodoById(id string, body []byte) (*entity.Todo, error) {
-	var message map[string]string
-
 	// JSONをパース
 	if err := json.Unmarshal(body, &message); err != nil {
 		return nil, err
