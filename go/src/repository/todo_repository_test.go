@@ -2,12 +2,19 @@ package repository
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-// TODO: テストコード書く
-// テストではコンテナ間通信に失敗するため、テストをスキップ
-func TestGetAllTodo(t *testing.T) {}
+// FIXME: テストコード書く
+// DNSでエラーが発生する
+func TestGetAllTodo(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		repository := NewTodoRepository()
 
-// TODO: テストコード書く
-// テストではコンテナ間通信に失敗するため、テストをスキップ
-func TestDbInit(t *testing.T) {}
+		todos, err := repository.GetAllTodo()
+
+		assert.NotEmpty(t, todos)
+		assert.NoError(t, err)
+	})
+}
