@@ -2,6 +2,7 @@ package main
 
 import (
 	"main/handler"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,7 +11,7 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"message": "ping pong",
 		})
 	})

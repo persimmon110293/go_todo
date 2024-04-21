@@ -14,7 +14,7 @@ func TestGetAllTodo(t *testing.T) {
 
 		todos, err := repository.GetAllTodo()
 
-		assert.NotNil(t, todos)
-		assert.Nil(t, err)
+		assert.NotEmpty(t, todos)
+		assert.NoError(t, err)
 	})
 }

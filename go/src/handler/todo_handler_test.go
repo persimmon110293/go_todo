@@ -16,11 +16,15 @@ func TestGetAllTodo(t *testing.T) {
 		router := gin.Default()
 		w := httptest.NewRecorder() // httptestの使い方調べてみる
 
-		req, _ := http.NewRequest("GET", "/todo", nil)
+		req, err := http.NewRequest("GET", "/todo", nil)
+		if err != nil {
+			t.Fatalf("could not create request: %v", err)
+		}
+
 		router.GET("/todo", GetAllTodo)
 		router.ServeHTTP(w, req)
 
 		assert.NotNil(t, w.Body)
-		assert.Equal(t, w.Code, 200)
+		assert.Equal(t, 200, w.Code)
 	})
 }
