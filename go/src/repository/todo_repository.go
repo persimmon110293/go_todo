@@ -123,7 +123,6 @@ func dbInit() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	// dsn := "root:password@tcp(mysql:3306)/practice?charset=utf8mb4&parseTime=true" // 練習用のためハードコーディング
 	// .envファイルから環境変数を取得してDSNを生成
 	dns := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true",
 		os.Getenv("DB_USER"),
