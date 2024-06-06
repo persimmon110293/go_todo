@@ -12,9 +12,9 @@ func TestGetAllTodo(t *testing.T) {
 		os.Unsetenv("DB_HOST")
 		os.Unsetenv("ENV_PATH")
 	})
-
 	os.Setenv("DB_HOST", "localhost")
 	os.Setenv("ENV_PATH", "../.env")
+
 	t.Run("success", func(t *testing.T) {
 		repository := NewTodoRepository()
 
