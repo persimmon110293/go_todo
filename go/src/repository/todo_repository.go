@@ -4,8 +4,11 @@ package repository
 
 import (
 	"errors"
+	"fmt"
 	entity "main/domain/entity"
+	"os"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -111,8 +114,25 @@ func (r *TodoRepository) DeleteTodoById(id string) error {
 }
 
 func dbInit() (*gorm.DB, error) {
-	dsn := "root:password@tcp(mysql:3306)/practice?charset=utf8mb4&parseTime=true" // 練習用のためハードコーディング
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	envPath := os.Getenv("ENV_PATH")
+	if envPath == "" {
+		envPath = "/go/src/app/.env"
+	}
+	err := godotenv.Load(envPath)
+	if err != nil {
+		return nil, err
+	}
+
+	// .envファイルから環境変数を取得してDSNを生成
+	dns := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASS"),
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_NAME"),
+	)
+
+	db, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
