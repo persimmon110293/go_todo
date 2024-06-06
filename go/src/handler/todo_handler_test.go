@@ -10,8 +10,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// FIXME: テストコード書く
-// DNSでエラーが発生する
 func TestGetAllTodo(t *testing.T) {
 	t.Cleanup(func() {
 		os.Unsetenv("DB_HOST")
@@ -22,7 +20,7 @@ func TestGetAllTodo(t *testing.T) {
 
 	t.Run("success", func(t *testing.T) {
 		router := gin.Default()
-		w := httptest.NewRecorder() // httptestの使い方調べてみる
+		w := httptest.NewRecorder()
 
 		req, err := http.NewRequest("GET", "/todo", nil)
 		if err != nil {
